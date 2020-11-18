@@ -1,0 +1,44 @@
+.combo{
+    width: 300px;
+    
+    position: relative;
+    top:10px;
+    left: 10px;
+}
+.closePanel{
+    display: none;
+    position:relative;
+    top:-80px;
+    left: 290px;
+    
+    height:90px;
+    border: 1px solid #ceadad;
+}
+.recordTypeDiv{
+    border: 1px solid #6b5555;
+    padding: 10px;
+    width: 100%;
+    
+    height: 70px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.countRecords{
+    margin-left:10px;
+    text-align: center; 
+    font-size: 18px; 
+    font-family:'Century Gothic'; 
+    height: 40px; 
+    position:relative; 
+    top:-10px; 
+    border-right:1px solid #e0a0a0;
+}
+.filterCard{
+    position: relative; 
+    top: 20px; 
+    height: 200px;
+    padding: 10px;
+}
+.childComponent{
+    display: none;
+}   

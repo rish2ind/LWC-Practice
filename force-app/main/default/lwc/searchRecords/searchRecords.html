@@ -1,0 +1,253 @@
+<template>
+ 
+        <header class="slds-builder-header">
+        <div class="slds-builder-header__item">
+        <div class="slds-builder-header__item-label slds-media slds-media_center">
+        <div class="slds-media__figure">
+        <span class="slds-icon_container slds-icon-utility-builder slds-current-color">
+        
+        </span>
+        </div>
+        <div class="slds-global-header__item" style="width:70px;">
+            
+            <div class="slds-global-header__logo">
+            <span class="slds-assistive-text">Salesforce</span>
+            </div>
+        </div>
+        </div>
+        </div>
+        <nav class="slds-builder-header__item slds-builder-header__nav">
+        <ul class="slds-builder-header__nav-list">
+        <li class="slds-builder-header__nav-item" style="padding:10px; border-right:1px solid white;">
+        <lightning-icon style="margin-top: 5px;" icon-name="utility:search" variant="inverse" size="small"></lightning-icon> &nbsp;&nbsp;&nbsp;&nbsp;
+        <span style="margin-top: 5px; font-size:16px;"> {value} Search </span>&nbsp;&nbsp;
+        <lightning-button-menu alternative-text="Show menu" onselect={handleChange} style="border:none; color:white;">
+          <lightning-menu-item value="Account" label="Account" ></lightning-menu-item>
+          <lightning-menu-item value="Contact" label="Contact" ></lightning-menu-item>
+          <lightning-menu-item value="Opportunity" label="Opportunity" ></lightning-menu-item>
+          
+      </lightning-button-menu>
+        
+        </li>
+        <!-- <li class="slds-builder-header__nav-item">
+            <lightning-combobox
+            name="progress"
+          
+            value={value}
+            placeholder="Select Progress"
+            options={options}
+            class="combo"></lightning-combobox>
+        </li> -->
+       <li class="slds-builder-header__nav-item combo">
+          <lightning-button variant="brand" label="View Result" onclick={viewResults}></lightning-button>
+        </li> 
+        </ul>
+        </nav>
+       
+        
+       
+        </header>
+        <lightning-card>
+            <!-- <p style="font-size: 18px; margin-left:10px;">Total {value} records : <strong>{countTotalRecords}</strong></p> -->
+            <template if:true={isLoaded} >
+              <lightning-spinner variant = "brand"
+                  alternative-text="Loading...">
+              </lightning-spinner>
+            </template>
+          <div class="slds-grid slds-gutters">
+            <template for:each={listofRecordCount} for:item="item" for:index="index">
+               
+                  <div class="slds-col"  key={item.Id}>
+                      
+                    <p class="countRecords"><span style="font-size: 25px; font-family: Arial, Helvetica, sans-serif;">{item.Name}</span> <br/><span style="position:relative; top:-5px;"> {item.Id} </span> </p> 
+                    
+                  </div>
+                    
+                   
+            </template>
+          </div>
+        </lightning-card>
+        
+        <template if:true={account}>
+        <lightning-card title="Related Contact" icon-name="standard:contact">
+          <div class="slds-grid slds-gutters">
+            <template for:each={listOfContactCount} for:item="item" for:index="index">
+              <div class="slds-col"  key={item.Id}>
+                      
+                <p class="countRecords"><span style="font-size: 25px; font-family: Arial, Helvetica, sans-serif;">{item.Name}</span> <br/><span style="position:relative; top:-5px;"> {item.Id} </span> </p> 
+                
+              </div>
+            </template>
+          </div>
+        </lightning-card>
+      </template>
+      <div class="mainDiv">
+        <article class="slds-card filterCard">
+          <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-4">
+              <lightning-icon style="margin-left: 10px;" icon-name="utility:people"></lightning-icon>  <span style="font-size: 22px;">Types of {value}</span>
+
+          <div class="recordTypeDiv" onclick={showPanel}>
+            I'm interested in ...
+            <p>
+            {valueCheckbox}
+          </p>
+          </div>       
+          <section aria-describedby="dialog-body-id-98" aria-label="Dialog Title" class="slds-popover slds-nubbin_left closePanel" role="dialog">
+            <button class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close" title="Close dialog" onclick={closePanel}>
+              <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Utility image" title="Image"></lightning-icon>
+              <span class="slds-assistive-text">Close dialog</span>
+            </button>
+            <div class="slds-popover__body" id="dialog-body-id-98">
+              <div class="slds-panel__body">
+                <template if:true={recordTypes}>
+                    <lightning-checkbox-group name="Record Types"
+                              
+                              options={optionsCheckbox}
+                              value={valueCheckbox}
+                              onchange={handleCheckbox}  style="margin-left:10px;"></lightning-checkbox-group>
+                            </template>
+                          </div>
+            </div>
+          </section>
+            </div>
+            <div class="slds-col slds-size_2-of-4">
+              <div  style=" width: 90%;">
+                <lightning-icon icon-name="utility:record_lookup"></lightning-icon>  <span style="font-size: 18px;">Search {value}</span>
+                  <lightning-tabset variant="scoped" style="position: relative; top: 5px;">
+                    <lightning-tab label="Name">
+                      <lightning-input style="width: 300px;margin-left:10px;" type="text" label="Enter some text" value={searchName} onchange={countName}></lightning-input>
+                    </lightning-tab>
+                   
+                        <lightning-tab label="Phone">
+                          <lightning-input style="width: 300px; margin-left:10px;" type="text" label="Phone" value={searchPhone} onchange={countPhone}></lightning-input>
+                        </lightning-tab>
+                        <lightning-tab label="Email">
+                          <lightning-input style="width: 300px;margin-left:10px;" type="email" label="Email" value={searchEmail} onchange={countEmail}></lightning-input>
+                        </lightning-tab>
+                </lightning-tabset>
+              </div>
+            </div>
+            
+          </div>
+            
+        </article>
+
+        
+      </div>
+      
+
+      <div class="childComponent">
+        <article class="slds-card" style="position: relative; top: 10px; ">
+        <div class="demo-only" style="display:flex;width:20rem;height:37.5rem">
+          <div class="slds-split-view_container slds-is-open">
+            <button class="slds-button slds-button_icon slds-button_icon slds-split-view__toggle-button slds-is-open" aria-controls="split-view-id" aria-expanded="true" title="Close Split View">
+              <svg class="slds-button__icon slds-button__icon_x-small" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#left"></use>
+              </svg>
+              <span class="slds-assistive-text">Close Split View</span>
+            </button>
+            <article aria-hidden="false" id="split-view-id" class="slds-split-view slds-grid slds-grid_vertical slds-grow">
+              <header class="slds-split-view__header">
+                <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+                  <div class="slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center">
+                      <div class="slds-media__figure">
+                        <div class="slds-icon_container slds-icon-standard-lead">
+                          <lightning-icon icon-name="standard:outcome"></lightning-icon>
+                          <span class="slds-assistive-text">Leads</span>
+                        </div>
+                      </div>
+                      <div class="slds-media__body">
+                        <h1 class="slds-text-heading_small slds-text-color_default slds-p-right_x-small">
+                          <button class="slds-button slds-button_reset slds-type-focus slds-truncate" aria-haspopup="true" title="">
+                            <span class="slds-grid slds-has-flexi-truncate slds-grid_vertical-align-center">
+                              <span class="slds-truncate" title="My Results">My Results</span>
+                              <svg class="slds-button__icon slds-button__icon_right slds-no-flex" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                              </svg>
+                            </span>
+                          </button>
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-no-flex slds-grid">
+                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="More Actions">
+                      <svg class="slds-button__icon" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                      </svg>
+                      <span class="slds-assistive-text">More Actions</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="slds-grid slds-grid_vertical-align-center">
+                  <p class="slds-text-body_small slds-text-color_weak">42 items • Updated just now</p>
+                  <div class="slds-no-flex slds-grid slds-col_bump-left">
+                    <div class="slds-button-group">
+                      <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-container-more" aria-haspopup="true" title="Display As Split View">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                          <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#side_list"></use>
+                        </svg>
+                        <svg class="slds-button__icon slds-button__icon_x-small" aria-hidden="true">
+                          <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Display As Split View</span>
+                      </button>
+                    </div>
+                    <div class="slds-button-group">
+                      <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-container" title="Refresh List">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                          <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#refresh"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Refresh List</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </header>
+              <div class="slds-grid slds-grid_vertical">
+                <div class="slds-split-view__list-header slds-grid">
+                  <lightning-input type="search" label="Filter"></lightning-input>
+                </div>
+                <ul class="slds-scrollable_y" style="height: 300px; width: 100%;" aria-multiselectable="true" role="listbox" aria-label="Select an item to open it in a new workspace tab.">
+                  <template for:each={viewContactsList} for:item="item" for:index="index">
+                    <li class="slds-split-view__list-item" role="presentation" key={item.Id}>
+                      <a href="javascript:void(0);" aria-selected="false" role="option" class="slds-split-view__list-item-action slds-grow slds-has-flexi-truncate" tabindex="0">
+                        <div class="slds-grid slds-wrap">
+                          <span class="slds-truncate slds-text-body_regular slds-text-color_default" title={item.Name}>{item.Name}</span>
+                          <span class="slds-truncate slds-col_bump-left" title="99">99</span>
+                        </div>
+                        <div class="slds-grid slds-wrap">
+                          <span class="slds-truncate" title="Biotech, Inc.">Biotech, Inc.</span>
+                          <span class="slds-truncate slds-col_bump-left" title="Nurturing">Nurturing</span>
+                        </div>
+                      </a>
+                    </li>
+                  </template>
+                  
+                </ul>
+              </div>
+            </article>
+          </div>
+        </div>
+        </article>
+        <!-- <article class="slds-card" style="position: relative; top: 10px; ">
+          <h1>Record Page</h1>
+          <div  style="width: 25%; margin-left: 10px; border-right:1px solid #da9a9a; padding: 10px;">
+        <lightning-input type="search" label="Filter"></lightning-input>
+            <ul class="slds-has-dividers_bottom-space">
+          <template for:each={viewContactsList} for:item="item" for:index="index">
+            
+           <li class="slds-item" key={item.Id}>
+              {item.Name}
+            </li>
+          
+          
+          </template>
+        </ul>
+      </div>
+        
+        </article> -->
+      </div>
+</template> 
