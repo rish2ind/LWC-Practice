@@ -22,6 +22,10 @@ export default class SearchRecords extends LightningElement {
     listofRecordCount = [];
     listOfContactCount = [];
    query = '';
+
+    checkedContacts = [];
+
+   totalCount ;
     viewContactsList;
 
     account = false;
@@ -161,7 +165,9 @@ export default class SearchRecords extends LightningElement {
                          Id:key,
                          Name:map1[key],
                      });
+                     
                  }
+                 
                 console.log('result: '+  this.listofRecordCount);
                 this.isLoaded = false;
             })
@@ -210,10 +216,30 @@ export default class SearchRecords extends LightningElement {
       })
       .then(result => {
         this.viewContactsList = result;
-        
+        this.totalCount = this.viewContactsList.length;
+                 console.log('This is total count' + this.totalCount);
         console.log('This is related contacts : ' + this.viewContactsList);
       })
       this.template.querySelector('.mainDiv').style.display = 'none';
       this.template.querySelector('.childComponent').style.display = 'block';
+  }
+
+  showId(event){
+
+      if(event.target.checked){
+        this.checkedContacts.push( event.target.value);
+      }
+      else{
+          this.checkedContacts.splice(event.target.id);
+      }
+    console.log('This is checkbox value : '+this.checkedContacts);
+  }
+
+  checkAll(event){
+      var i;
+      var checkboxes = this.template.querySelectorAll('[data-id="index"]');
+      for(i = 0; i <= checkboxes.length; i++ ){
+          checkboxes[i].checked = event.target.value;
+      }
   }
 }

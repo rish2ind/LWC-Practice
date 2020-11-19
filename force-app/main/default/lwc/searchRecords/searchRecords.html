@@ -182,7 +182,7 @@
                   </div>
                 </div>
                 <div class="slds-grid slds-grid_vertical-align-center">
-                  <p class="slds-text-body_small slds-text-color_weak">42 items • Updated just now</p>
+                  <p class="slds-text-body_small slds-text-color_weak">{totalCount} items • Updated just now</p>
                   <div class="slds-no-flex slds-grid slds-col_bump-left">
                     <div class="slds-button-group">
                       <button class="slds-button slds-button_icon slds-button_icon slds-button_icon-container-more" aria-haspopup="true" title="Display As Split View">
@@ -208,13 +208,15 @@
               </header>
               <div class="slds-grid slds-grid_vertical">
                 <div class="slds-split-view__list-header slds-grid">
-                  <lightning-input type="search" label="Filter"></lightning-input>
+                  <lightning-input type="search" label="Filter"></lightning-input> <br/>
+                  <lightning-input type="checkbox" label="Basic option" name="input1" onchange={checkAll}></lightning-input>
                 </div>
                 <ul class="slds-scrollable_y" style="height: 300px; width: 100%;" aria-multiselectable="true" role="listbox" aria-label="Select an item to open it in a new workspace tab.">
                   <template for:each={viewContactsList} for:item="item" for:index="index">
                     <li class="slds-split-view__list-item" role="presentation" key={item.Id}>
                       <a href="javascript:void(0);" aria-selected="false" role="option" class="slds-split-view__list-item-action slds-grow slds-has-flexi-truncate" tabindex="0">
                         <div class="slds-grid slds-wrap">
+                          <lightning-input type="checkbox" onchange={showId} value ={item.Id} data-id={index} name="input1"></lightning-input>
                           <span class="slds-truncate slds-text-body_regular slds-text-color_default" title={item.Name}>{item.Name}</span>
                           <span class="slds-truncate slds-col_bump-left" title="99">99</span>
                         </div>
