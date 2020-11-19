@@ -230,16 +230,28 @@ export default class SearchRecords extends LightningElement {
         this.checkedContacts.push( event.target.value);
       }
       else{
-          this.checkedContacts.splice(event.target.id);
+          const index = this.checkedContacts.indexOf(event.target.value);
+          console.log('This is the index : ' + index);
+          this.checkedContacts.splice(index, 1);
       }
     console.log('This is checkbox value : '+this.checkedContacts);
   }
 
   checkAll(event){
-      var i;
-      var checkboxes = this.template.querySelectorAll('[data-id="index"]');
-      for(i = 0; i <= checkboxes.length; i++ ){
-          checkboxes[i].checked = event.target.value;
+      let i;
+      let j;
+      this.checkedContacts = [];
+      let checkboxes = this.template.querySelectorAll('[data-id="check"]');
+
+      for(i = 0; i < checkboxes.length; i++ ){
+          checkboxes[i].checked = event.target.checked;
+          
+          
       }
+      for(j = 0; j < this.viewContactsList.length; j++){
+        this.checkedContacts.push(this.viewContactsList[j].Id);
+        console.log('Incoming IDs : ' + this.viewContactsList[j].Id);
+      }
+      console.log('These are all IDs : ' + this.checkedContacts);
   }
 }
