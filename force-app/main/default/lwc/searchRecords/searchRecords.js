@@ -4,6 +4,7 @@ import countRecords from '@salesforce/apex/FilterRecords.countRecords';
 import filterNames from '@salesforce/apex/FilterRecords.filterNames';
 import accountContact from '@salesforce/apex/FilterRecords.accountContact';
 import viewRecords from '@salesforce/apex/FilterRecords.viewRecords';
+
 export default class SearchRecords extends LightningElement {
 
     @api isLoaded = false;
@@ -21,6 +22,8 @@ export default class SearchRecords extends LightningElement {
     allRecordType = [];
     listofRecordCount = [];
     listOfContactCount = [];
+    filteringName = '';
+
    query = '';
 
     checkedContacts = [];
@@ -211,6 +214,7 @@ export default class SearchRecords extends LightningElement {
       //alert('You click on a button !!');
       viewRecords({
         query : this.query,
+        filterByName : this.filteringName,
         listOfRecordType:this.valueCheckbox,
         allRecordType : this.allRecordType,
       })
@@ -253,5 +257,20 @@ export default class SearchRecords extends LightningElement {
         console.log('Incoming IDs : ' + this.viewContactsList[j].Id);
       }
       console.log('These are all IDs : ' + this.checkedContacts);
+  }
+  filtering(event){
+      this.filteringName = event.detail.value;
+      viewRecords({
+        query : this.query,
+        filterByName : this.filteringName,
+        listOfRecordType:this.valueCheckbox,
+        allRecordType : this.allRecordType,
+      })
+      .then(result => {
+        this.viewContactsList = result;
+        this.totalCount = this.viewContactsList.length;
+                 console.log('This is total count' + this.totalCount);
+        console.log('This is related contacts : ' + this.viewContactsList);
+      })
   }
 }

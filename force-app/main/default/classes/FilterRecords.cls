@@ -87,10 +87,13 @@ public with sharing class FilterRecords {
     //     return conList;
     // }
     @AuraEnabled(cacheable=true)
-    public static List<sObject> viewRecords(String query, list<String> listOfRecordType, list<String> allRecordType){
+    public static List<sObject> viewRecords(String query, String filterByName, list<String> listOfRecordType, list<String> allRecordType){
         String p;
-        String query1='SELECT Name FROM '+ query;
-        
+        String query1='SELECT Name FROM '+ query + ' AND Name LIKE \'%'+filterByName+'%\'';
+        // if(filterByName == ''){
+        //     query1 = query1.substring(0, query1.indexOf('AND'));
+        // }
+
 
         
         List<sObject> groupedResults = Database.query(query1);
@@ -100,4 +103,15 @@ public with sharing class FilterRecords {
         
         return groupedResults;
     }
+    // @AuraEnabled(cacheable=true)
+    // public static List<sObject> filteringRecords(List<sObject> objList, String name, String objName){
+    //     Set<Id> setId = new Set<Id>();
+    //     for(sObject s : objList){
+    //         setId.add(s.Id);
+    //     }
+    //     String query1 = 'SELECT Name FROM ' + objName + ' where Id in :setId Name LIKE  \'%'+name+'%\'';
+    //     List<sObject> resultQuery = Database.query(query1);
+    //     return resultQuery;
+    // }
+    
 }
