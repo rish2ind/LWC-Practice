@@ -23,7 +23,7 @@ export default class SearchRecords extends LightningElement {
     listofRecordCount = [];
     listOfContactCount = [];
     filteringName = '';
-
+    showRecordId = '';
    query = '';
 
     checkedContacts = [];
@@ -273,4 +273,9 @@ export default class SearchRecords extends LightningElement {
         console.log('This is related contacts : ' + this.viewContactsList);
       })
   }
+  showViewPage(event){
+    this.showRecordId = event.target.value;
+    console.log('This is record Id of the select record : ' + this.showRecordId);
+
+  } 
 }
